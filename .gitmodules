@@ -1,0 +1,3 @@
+[submodule "cinatra"]
+	path = cinatra
+	url = git@github.com:g199209/cinatra.git

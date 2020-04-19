@@ -19,15 +19,22 @@ if (DEFINED ENABLE_COVERAGE)
   set(CMAKE_SHARED_LINKER_FLAGS "--coverage")
 endif ()
 
+include_directories("/usr/local/include")
+include_directories("${PROJECT_SOURCE_DIR}/cinatra/include")
+link_directories("/usr/local/lib")
+link_directories("/usr/lib64")
+link_directories("/usr/lib")
+
 find_package(Boost REQUIRED)
 
 if (NOT Boost_FOUND)
   message("Not found Boost")
 endif ()
 
-include_directories("/usr/local/include")
-link_directories("/usr/local/lib")
-link_directories("/usr/lib64")
-link_directories("/usr/lib")
+add_library(objs OBJECT main.cpp)
 
-add_executable(HASS_AliGenie main.cpp)
+set(DEP_LIBS uuid pthread)
+
+add_executable(HASS_AliGenie $<TARGET_OBJECTS:objs>)
+
+target_link_libraries(HASS_AliGenie ${DEP_LIBS})
