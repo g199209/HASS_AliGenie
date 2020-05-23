@@ -5,11 +5,13 @@ IF (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug)
 ENDIF (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-set(WARNING_FLAGS "-Wall -Winline")
+set(WARNING_FLAGS "-Wall -Winline -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-inline -Wno-reorder -Wno-unused-function -Wno-switch")
+
+set(PREDEFINE "-DCINATRA_ENABLE_SSL -DCINATRA_ENABLE_GZIP")
 
 # Select flags.
-set(CMAKE_CXX_FLAGS "-std=c++2a ${WARNING_FLAGS} -mcrc32 -mavx2 -march=native -static-libgcc -static-libstdc++")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0 ")
+set(CMAKE_CXX_FLAGS "-std=c++2a ${WARNING_FLAGS} ${PREDEFINE} -mcrc32 -mavx2 -march=native -static-libgcc -static-libstdc++")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0 -DDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-g -ggdb -O3")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
@@ -33,7 +35,7 @@ endif ()
 
 add_library(objs OBJECT main.cpp)
 
-set(DEP_LIBS uuid pthread)
+set(DEP_LIBS ssl.a crypto.a z dl uuid pthread)
 
 add_executable(HASS_AliGenie $<TARGET_OBJECTS:objs>)
 
